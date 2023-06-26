@@ -7,37 +7,36 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class ExampleApiTest {
-
+    
     @Test
-    public void testGetRequest() {
-        RestAssured.baseURI = "https://api.example.com";
+    public void testGetPosts() {
+
+        RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
 
         Response response = given()
                 .when()
-                .get("/users")
+                .get("/posts")
                 .then()
                 .extract().response();
 
         response.then().statusCode(200);
-        response.then().body("users[0].name", equalTo("John Doe"));
+
+        response.then().body("[0].title", equalTo("sunt aut facere repellat provident occaecati excepturi optio reprehenderit"));
     }
 
     @Test
-    public void testPostRequest() {
-        RestAssured.baseURI = "https://api.example.com";
+    public void testGetComments() {
 
-        String requestBody = "{\"name\": \"John Doe\", \"email\": \"johndoe@example.com\"}";
+        RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
 
         Response response = given()
-                .header("Content-Type", "application/json")
-                .body(requestBody)
                 .when()
-                .post("/users")
+                .get("/comments")
                 .then()
                 .extract().response();
 
-        response.then().statusCode(201);
+        response.then().statusCode(200);
 
-        response.then().body("id", notNullValue());
+        response.then().body("[0].name", equalTo("id labore ex et quam laborum"));
     }
 }
